@@ -1,0 +1,33 @@
+
+// --------------------------------------------------
+
+* { box-sizing: border-box; }
+
+// --------------------------------------------------
+
+*:first-child { margin-top: 0; }
+*:last-child { margin-bottom: 0; }
+
+// --------------------------------------------------
+
+body
+{
+	min-height: 100vh;
+
+	margin: 0;
+	padding: 4em;
+
+	border: 1em solid deeppink;
+
+	&.ready
+	{
+		border-color: mediumspringgreen;
+	}
+
+	&:not( .js )
+	{
+		border-color: red;
+	}
+}
+
+// --------------------------------------------------
