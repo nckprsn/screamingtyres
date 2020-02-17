@@ -14,7 +14,7 @@ var gulp = require( 'gulp' );
 module.exports.default = gulp.series
 (
 	server.cleanup,
-	
+
 	gulp.parallel
 	(
 		stylesheets.make,
@@ -29,6 +29,20 @@ module.exports.default = gulp.series
 		stylesheets.watch,
 		scripts.watch,
 	),
+);
+
+// --------------------------------------------------
+
+module.exports.build = gulp.series
+(
+	server.cleanup,
+
+	gulp.parallel
+	(
+		stylesheets.make,
+		scripts.make,
+		scripts.make_components,
+	)
 );
 
 // --------------------------------------------------
