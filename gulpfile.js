@@ -1,6 +1,7 @@
 
 // --------------------------------------------------
 
+var pages = require( './tasks/pages.js' );
 var stylesheets = require( './tasks/stylesheets.js' );
 var scripts = require( './tasks/scripts.js' );
 var server = require( './tasks/server.js' );
@@ -17,6 +18,7 @@ module.exports.default = gulp.series
 
 	gulp.parallel
 	(
+		pages.make,
 		stylesheets.make,
 		scripts.make,
 		scripts.make_components,
@@ -26,6 +28,7 @@ module.exports.default = gulp.series
 
 	gulp.parallel
 	(
+		pages.watch,
 		stylesheets.watch,
 		scripts.watch,
 	),
@@ -39,6 +42,7 @@ module.exports.build = gulp.series
 
 	gulp.parallel
 	(
+		pages.make,
 		stylesheets.make,
 		scripts.make,
 		scripts.make_components,

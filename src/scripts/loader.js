@@ -183,7 +183,3 @@ LOADER.prototype.are_ready = function( scripts )
 }
 
 // --------------------------------------------------
-
-// TODO: A (conditional?) `module.exports = LOADER;`
-
-// --------------------------------------------------

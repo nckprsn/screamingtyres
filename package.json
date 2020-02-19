@@ -1,26 +1,31 @@
 {
-	"name": "screamingtyres",
-	"version": "0.0.1",
-	"description": "An in-browser turn based racing game",
-	"main": "",
-	"dependencies": {},
-	"devDependencies":
-	{
-		"browser-sync": "^2.26.7",
-		"del": "^5.1.0",
-		"gulp": "^4.0.2",
-		"gulp-rename": "^2.0.0",
-		"gulp-sass": "^4.0.2"
-	},
-	"scripts":
-	{
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"author":
-	{
-		"name" : "Nick Pearson",
-		"email" : "nick@nckprsn.com",
-		"url" : "https://nckprsn.com/"
-	},
-	"license": "MIT"
+  "name": "screamingtyres",
+  "version": "0.0.1",
+  "description": "An in-browser turn based racing game",
+  "main": "",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "browserify": "^16.5.0",
+    "del": "^5.1.0",
+    "fs": "0.0.1-security",
+    "gulp": "^4.0.2",
+    "gulp-buffer": "0.0.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-tap": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "nunjucks": "^3.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Nick Pearson",
+    "email": "nick@nckprsn.com",
+    "url": "https://nckprsn.com/"
+  },
+  "repository": "github:nckprsn/screamingtyres",
+  "license": "MIT"
 }

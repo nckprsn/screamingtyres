@@ -48,10 +48,3 @@ var CLASSES =
 };
 
 // --------------------------------------------------
-
-if( typeof loader == 'object' )
-{
-	loader.register( 'utils/classes' , [ 'utils/one' ] , function(){ console.log( 'Classes ready to go!' ); } );
-}
-
-// --------------------------------------------------
