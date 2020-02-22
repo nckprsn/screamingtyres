@@ -1,0 +1,15 @@
+{
+	"meta":
+	{
+		"slug": "new",
+		"title": "New game",
+		"description": "Start a new game of Screaming Tyres."
+	},
+	"content": "<h1>Start a new game</h1><ul><li><a href=\"/\">Back</a></li></ul>",
+	"scripts":
+	[
+		{ "src": "/static/js/loader.js" },
+		{ "content": "var loader = new LOADER( { src_prefix: '/static/js/' } );" },
+		{ "src": "/static/js/example.js" }
+	]
+}

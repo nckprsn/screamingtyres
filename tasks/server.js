@@ -42,11 +42,19 @@ var resync = function( callback )
 
 // --------------------------------------------------
 
+var reload = function( callback )
+{
+	return browsersync.reload();
+};
+
+// --------------------------------------------------
+
 module.exports =
 {
 	settings: settings,
 	start: start,
 	resync: resync,
+	reload: reload,
 	cleanup: cleanup,
 };
 

@@ -4,23 +4,18 @@
 var server = require( './server.js' );
 
 var gulp = require( 'gulp' );
-const nunjucks = require( 'nunjucks' );
-const fs = require( "fs" );
+var rename = require( 'gulp-rename' );
+var nunjucks = require( 'nunjucks' );
+var fs = require( 'fs' );
+var Transform = require( 'stream' ).Transform;
 
 // --------------------------------------------------
 
 var settings =
 {
-	// TODO: Get this from src dir
-	pages:
-	[
-		'./src/pages/new.json',
-		'./src/pages/join.json',
-		'./src/pages/home.json',
-	],
 	template_dir: './src/templates/',
-	src: './src/pages/**/*.json',
-	watch: [ './src/pages/**/*.json' , './src/templates/**/*.njk' ],
+	src: './src/pages/**/index.json',
+	watch: [ './src/pages/**/index.json' , './src/templates/**/*.njk' ],
 	dest: './public/',
 };
 
@@ -28,19 +23,49 @@ var settings =
 
 var make_pages = function( callback )
 {
-	let njk = nunjucks.configure( settings.template_dir );
+	return gulp.src( settings.src )
 
-	settings.pages.map( function( page_path )
+	//
+	.pipe( render_pages() )
+
+	// Rename to [path]/index.html
+	.pipe( rename( function( path , file )
 	{
-		var data = JSON.parse( fs.readFileSync( page_path , 'utf8' ) );
+		path.basename = 'index';
+		path.extname = '.html';
+	} ) )
 
-		fs.mkdir( settings.dest + data.meta.slug , { "recursive":true } , function()
-		{
-			fs.writeFile( settings.dest + data.meta.slug + '/index.html' , nunjucks.render( 'html.njk' , data ) , function(){} );
-		} );
-	} );
+	.pipe( gulp.dest( settings.dest ) );
+	// .pipe( server.reload() );
+};
 
-	callback();
+// --------------------------------------------------
+
+var render_pages = function( callback )
+{
+	// Monkey patch Transform or create your own subclass,
+    // implementing `_transform()` and optionally `_flush()`
+    var transformStream = new Transform( { objectMode: true } );
+    /**
+     * @param {Buffer|string} file
+     * @param {string=} encoding - ignored if file contains a Buffer
+     * @param {function(Error, object)} callback - Call this function (optionally with an
+     *          error argument and data) when you are done processing the supplied chunk.
+     */
+    transformStream._transform = function( file , encoding , callback )
+	{
+		var njk = nunjucks.configure( settings.template_dir );
+
+		var error = null;
+		var data = JSON.parse( file.contents.toString() );
+		var output = nunjucks.render( 'html.njk' , data )
+
+		file.contents = new Buffer( output );
+
+		callback( error , file );
+    };
+
+    return transformStream;
 };
 
 // --------------------------------------------------
