@@ -58,6 +58,11 @@ var render_pages = function( callback )
 
 		var error = null;
 		var data = JSON.parse( file.contents.toString() );
+
+		var cwd = file.history[ 0 ].substring( 0 , file.history[ 0 ].lastIndexOf( '/' ) + 1 );
+
+		resolve_file_mappings( data , cwd );
+
 		var output = nunjucks.render( 'html.njk' , data )
 
 		file.contents = new Buffer( output );
@@ -66,6 +71,23 @@ var render_pages = function( callback )
     };
 
     return transformStream;
+};
+
+// --------------------------------------------------
+
+var resolve_file_mappings = function( object , cwd )
+{
+	Object.keys( object ).forEach( function( key )
+	{
+		if( typeof object[ key ] == 'string' && object[ key ].indexOf( '@' ) === 0 )
+		{
+			var path = cwd + object[ key ].substring( 1 );
+
+			var content = fs.readFileSync( path ).toString();
+
+			object[ key ] = content;
+		}
+	} );
 };
 
 // --------------------------------------------------

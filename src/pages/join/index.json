@@ -3,9 +3,9 @@
 	{
 		"slug": "join",
 		"title": "Join a game",
-		"description": "Join an existing game of Screaming Tyres."
+		"description": "Join an existing game of Screaming Tyres. Enter a game id, or look for games on your local network."
 	},
-	"content": "<h1>Join a game</h1><ul><li><a href=\"/\">Back</a></li></ul>",
+	"content": "@join.html",
 	"scripts":
 	[
 		{ "src": "/static/js/loader.js" },
