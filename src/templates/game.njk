@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ meta.title }}</title>
+		<meta name="description" content="{{ meta.description }}">
+		<link rel="stylesheet" href="/static/css/core.css">
+		<link rel="stylesheet" href="/static/css/components.css">
+	</head>
+	<body>
+
+{% filter i(2) %}{% include 'components/game/template.njk' %}{% endfilter %}
+
+		<script src="/static/js/loader.js"></script>
+		<script>var loader = new LOADER( { src_prefix: '/static/js/' } );</script>
+		<script src="/static/js/game.js"></script>
+		<script src="/static/js/ui.js"></script>
+
+	</body>
+</html>

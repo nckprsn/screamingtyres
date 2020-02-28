@@ -15,15 +15,14 @@ body
 	min-height: 100vh;
 
 	margin: 0;
+	padding: 0;
+}
+
+// --------------------------------------------------
+
+main
+{
 	padding: 4em;
-
-	border: 1em solid deeppink;
-
-	&.ready
-	{
-		border-color: mediumspringgreen;
-	}
-
 }
 
 // --------------------------------------------------

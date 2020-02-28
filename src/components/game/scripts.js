@@ -11,7 +11,7 @@
  *  @param {string} settings.who - Who to greet when created.
 */
 
-var EXAMPLE = function( settings )
+var GAME = function( settings )
 {
 	// Force to empty object if not set
 	settings = ( typeof settings != 'undefined' ? settings : {} );
@@ -35,7 +35,7 @@ var EXAMPLE = function( settings )
  *  @returns {boolean} Always returns true.
 */
 
-EXAMPLE.prototype.hello = function()
+GAME.prototype.hello = function()
 {
 	console.log( 'Hello ' + this.settings.who );
 
@@ -47,9 +47,9 @@ EXAMPLE.prototype.hello = function()
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'example' , [ 'utils/classes' ] , function()
+	loader.register( 'game' , [ 'utils/classes' ] , function()
 	{
-		CLASSES.add( document.body , 'ready' );
+		// initialise!!!
 	} );
 }
 
@@ -70,7 +70,7 @@ if( typeof loader == 'object' )
 	// Create an instance for each element
 	for( var i = 0 ; i < elements.length ; i ++ )
 	{
-		var component = new EXAMPLE( { who: 'Nick' } );
+		var component = new GAME( { who: 'Nick' } );
 	}
 
 })();

@@ -21,11 +21,11 @@ var settings =
 
 // --------------------------------------------------
 
-var browserify = require('browserify');
-var tap = require('gulp-tap');
-var buffer = require('gulp-buffer');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify = require('gulp-uglify');
+var browserify = require( 'browserify' );
+var tap = require( 'gulp-tap' );
+var buffer = require( 'gulp-buffer' );
+var sourcemaps = require( 'gulp-sourcemaps' );
+var uglify = require( 'gulp-uglify' );
 
 // --------------------------------------------------
 
@@ -84,7 +84,7 @@ var make_component_scripts = function()
 
 var watch_scripts = function( callback )
 {
-	gulp.watch( settings.watch , make_scripts );
+	gulp.watch( settings.watch , gulp.parallel( make_scripts , make_component_scripts ) );
 
 	callback();
 };
