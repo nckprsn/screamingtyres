@@ -6,8 +6,8 @@ var server = require( './server.js' );
 var gulp = require( 'gulp' );
 var rename = require( 'gulp-rename' );
 var nunjucks = require( 'nunjucks' );
+var through = require( 'through2' );
 var fs = require( 'fs' );
-var Transform = require( 'stream' ).Transform;
 
 // --------------------------------------------------
 
@@ -28,7 +28,11 @@ var settings =
 // --------------------------------------------------
 // Set up Nunjucks
 
-var njk = nunjucks.configure( settings.template_dir , { autoescape: false } );
+var njk = nunjucks.configure( settings.template_dir,
+{
+	autoescape: false,
+	noCache: true,
+} );
 
 njk.addFilter( 'i' , function( input , count )
 {
@@ -57,34 +61,16 @@ var make_pages = function( callback )
 
 		.pipe( gulp.dest( settings.dest ) )
 
-		// TODO: Fix this.
-		// .pipe( server.reload() )
+		.pipe( server.resync( '**/*.html' ) )
 	);
 };
 
 // --------------------------------------------------
 
-var render_template = function( template_path , data )
+var render_pages = function()
 {
-	return njk.render( template_path , data )
-};
-
-// --------------------------------------------------
-
-var render_pages = function( callback )
-{
-	// Monkey patch Transform or create your own subclass,
-    // implementing `_transform()` and optionally `_flush()`
-    var transformStream = new Transform( { objectMode: true } );
-    /**
-     * @param {Buffer|string} file
-     * @param {string=} encoding - ignored if file contains a Buffer
-     * @param {function(Error, object)} callback - Call this function (optionally with an
-     *          error argument and data) when you are done processing the supplied chunk.
-     */
-    transformStream._transform = function( file , encoding , callback )
+	return through.obj( function( file , encoding , callback )
 	{
-		var error = null;
 		var data = JSON.parse( file.contents.toString() );
 
 		var cwd = file.history[ 0 ].substring( 0 , file.history[ 0 ].lastIndexOf( '/' ) + 1 );
@@ -93,12 +79,19 @@ var render_pages = function( callback )
 
 		var output = render_template( `templates/${ data.template }.njk` , data );
 
+		// TODO: capture any errors
+
 		file.contents = new Buffer( output );
 
-		callback( error , file );
-    };
+		callback( null , file );
+	} );
+};
 
-    return transformStream;
+// --------------------------------------------------
+
+var render_template = function( template_path , data )
+{
+	return njk.render( template_path , data )
 };
 
 // --------------------------------------------------

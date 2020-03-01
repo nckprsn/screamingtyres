@@ -1,0 +1,55 @@
+
+.st_cursor
+{
+	// --------------------------------------------------
+
+	--position_x: 10;
+	--position_y: 10;
+
+	// --------------------------------------------------
+
+	transform: translate( calc( var( --position_x ) * 1em ) , calc( var( --position_y ) * 1em ) );
+
+	// --------------------------------------------------
+
+	display: block;
+	width: 1em;
+	height: 1em;
+
+	position: absolute;
+
+	// --------------------------------------------------
+
+	&::before
+	{
+		content: '';
+		display: block;
+		position: absolute;
+		width: 1em;
+		height: 1em;
+
+		border: 0.1em solid #FF611E;
+	}
+
+	&::after
+	{
+		content: '';
+		display: block;
+		position: absolute;
+		width: 1em;
+		height: 1em;
+
+		border: 0.1em solid white;
+
+		animation: st_cursor_pulse 110ms infinite;
+	}
+
+	// --------------------------------------------------
+}
+
+@keyframes st_cursor_pulse
+{
+	  0% { opacity: 1; }
+	 50% { opacity: 0; }
+	100% { opacity: 1; }
+}
