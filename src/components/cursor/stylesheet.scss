@@ -3,8 +3,9 @@
 {
 	// --------------------------------------------------
 
-	--position_x: 10;
-	--position_y: 10;
+	--position_x: 0;
+	--position_y: 0;
+	--colour: grey;
 
 	// --------------------------------------------------
 
@@ -28,7 +29,7 @@
 		width: 1em;
 		height: 1em;
 
-		border: 0.1em solid #FF611E;
+		border: 0.1em solid var( --colour );
 	}
 
 	&::after

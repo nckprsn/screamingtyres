@@ -4,75 +4,46 @@
 // --------------------------------------------------
 
 /**
- *  Constructor. Also says hello.
+ * Container class for the user interface
  *
- *  @class
- *  @param {Object} settings - Key/value pairs.
- *  @param {string} settings.who - Who to greet when created.
+ * @class
+ * @param {Object} settings - Key/value pairs.
 */
 
 var UI = function( settings )
 {
-	// Force to empty object if not set
-	settings = ( typeof settings != 'undefined' ? settings : {} );
-
-	// Populate our settings
-	this.settings =
-	{
-		// `who` must always be a string
-		who: typeof settings.who != 'undefined' ? settings.who : 'world',
-	};
-
-	// Send greeting
-	this.hello();
+	this.cursor = this.init_cursor();
 };
 
 // --------------------------------------------------
 
 /**
- *  Says hello.
+ * Creates a cursor.
  *
- *  @returns {boolean} Always returns true.
+ * @returns {CURSOR} Returns a new cursor object.
 */
 
-UI.prototype.hello = function()
+UI.prototype.init_cursor = function()
 {
-	console.log( 'Hello ' + this.settings.who );
-
-	return true;
+	var cursor = new CURSOR(
+	{
+		position: { x: 10 , y: 10 },
+		colour: 'deeppink',
+		boundary_test: function( position )
+		{
+			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
+		},
+	} );
 };
 
 // --------------------------------------------------
-// Testing out the loader
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'ui' , [ 'utils/classes' ] , function()
+	loader.register( 'ui' , [ 'cursor' ] , function()
 	{
-		// initialise!!!
+		var ui = new UI();
 	} );
 }
 
-// --------------------------------------------------
-
-/**
- *  Self initialisation.
-*/
-/*
-(function ()
-{
-	// Get all DOM elements matching our component's class
-	var elements = document.querySelectorAll( '.namespace_component' );
-
-	// Abandon if none found
-	if( !elements ) return false;
-
-	// Create an instance for each element
-	for( var i = 0 ; i < elements.length ; i ++ )
-	{
-		var component = new UI( { who: 'Nick' } );
-	}
-
-})();
-*/
 // --------------------------------------------------
