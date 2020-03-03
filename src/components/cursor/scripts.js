@@ -24,7 +24,7 @@ var CURSOR = function( properties )
 		if( !this.hasOwnProperty( property ) ) this[ property ] = properties[ property ];
 	}
 
-	// General set up, create DOM element...
+	// General set up, create DOM element, etc
 	this.initialise();
 
 	// Turn it on
@@ -35,7 +35,6 @@ var CURSOR = function( properties )
 
 /**
  * @destructor
- * @returns {boolean} Always returns true
 */
 
 CURSOR.prototype.destroy = function()
@@ -43,58 +42,52 @@ CURSOR.prototype.destroy = function()
 	// Deactivate first to remove any event listeners
 	this.deactivate();
 
-	// TODO: Delete DOM element
-
-	return true;
+	// Delete our cursor's DOM element
+	this.$cursor.parentElement.removeChild( this.$cursor )
 };
 
 // --------------------------------------------------
 
 /**
- * Cold-start setup
- *
- * @returns {boolean} Return true on success or false on failure
+ * Cold-start setup.
 */
 
 CURSOR.prototype.initialise = function()
 {
 	// Create a DOM element for the cursor
+	// (currently from static content in UI template)
 	this.$cursor = document.querySelector( '.st_cursor' );
+	// CLASSES.add( this.$cursor , 'st_cursor' );
 
-	// CLASSES.add( this.$cursor , 'st_cursorss' );
-};
-
-// --------------------------------------------------
-
-/**
- *
- *
- * @returns {boolean} Return true on success or false on failure
-*/
-
-CURSOR.prototype.activate = function()
-{
+	// Set the cursor colour if provided
 	if( this.colour )
 	{
 		this.$cursor.style.setProperty( '--colour' , this.colour );
 	}
 
+	// Bind any event handlers to this CURSOR instance
+	this.keystroke_handler = this.keystroke_handler.bind( this )
+};
+
+// --------------------------------------------------
+
+/**
+ * Activates the cursor.
+*/
+
+CURSOR.prototype.activate = function()
+{
 	// Run an update first
 	this.update();
 
-	// Bind keystroke handler to this CURSOR instance
-	this.keystroke_handler = this.keystroke_handler.bind( this )
-
-	// Attach our handler to the keydown event
+	// Attach event handlers to input events
 	document.body.addEventListener( 'keydown' , this.keystroke_handler );
 };
 
 // --------------------------------------------------
 
 /**
- *
- *
- * @returns {boolean} Return true on success or false on failure
+ * Deactivates the cursor.
 */
 
 CURSOR.prototype.deactivate = function()
@@ -106,16 +99,17 @@ CURSOR.prototype.deactivate = function()
 // --------------------------------------------------
 
 /**
- * Updates the custom variables on the DOM element to
- *
- * @returns {boolean} Always returns true.
+ * Updates the custom variables on the DOM element.
 */
 
 CURSOR.prototype.update = function()
 {
-	this.$cursor.style.setProperty( '--position_x' , this.position.x );
-	this.$cursor.style.setProperty( '--position_y' , this.position.y );
-	return true;
+	// Wrap with requestAnimationFrame so it can resolve later
+	window.requestAnimationFrame( function()
+	{
+		this.$cursor.style.setProperty( '--position_x' , this.position.x );
+		this.$cursor.style.setProperty( '--position_y' , this.position.y );
+	}.bind( this ) ); // Bind the callback above to this CURSOR instance
 };
 
 // --------------------------------------------------
@@ -123,21 +117,25 @@ CURSOR.prototype.update = function()
 /**
  * Moves the cursor position.
  *
- * @returns {boolean} Always returns true.
+ * @returns {boolean} Returns true if the move was successful, false if not.
 */
 
-CURSOR.prototype.update_position = function( position )
+CURSOR.prototype.move_by = function( move )
 {
+	// Work out where the cursor would move to first
 	var new_position =
 	{
-		x: this.position.x + ( position.x != null ? position.x : 0 ),
-		y: this.position.y + ( position.y != null ? position.y : 0 ),
+		x: this.position.x + move.x,
+		y: this.position.y + move.y,
 	};
 
+	// Abandon if the boundary test fails
 	if( !this.boundary_test( new_position ) ) return false;
 
+	// Assign the new position
 	this.position = new_position;
 
+	// Sync up the UI
 	this.update();
 
 	return true;
@@ -146,55 +144,59 @@ CURSOR.prototype.update_position = function( position )
 // --------------------------------------------------
 
 /**
- *  Sets the cursor position.
+ * Handles keyboard input. Designed to be attached to a keydown event listener.
  *
- *  @returns {boolean} Always returns true.
+ * @param {Object} e - Event object
 */
 
 CURSOR.prototype.keystroke_handler = function( e )
 {
+	// Will use this to see if we need to preventDefault() after processing
 	var handled = false;
 
 	switch( e.code )
 	{
 		case "KeyS":
 		case "ArrowDown":
-			this.update_position( { x: null , y: 1 } );
+			this.move_by( { x: 0 , y: 1 } );
 			handled = true;
 			break;
 
 		case "KeyW":
 		case "ArrowUp":
-			this.update_position( { x: null , y: -1 } );
+			this.move_by( { x: 0 , y: -1 } );
 			handled = true;
 			break;
 
 		case "KeyA":
 		case "ArrowLeft":
-			this.update_position( { x: -1 , y: null } );
+			this.move_by( { x: -1 , y: 0 } );
 			handled = true;
 			break;
 
 		case "KeyD":
 		case "ArrowRight":
-			this.update_position( { x: 1 , y: null } );
+			this.move_by( { x: 1 , y: 0 } );
+			handled = true;
+			break;
+
+		case "Escape":
+			this.destroy();
 			handled = true;
 			break;
 	}
 
+	// Prevent the default action this event would usually trigger
 	if( handled ) e.preventDefault();
 
 };
 
 // --------------------------------------------------
-// Testing out the loader
+// Register dependencies and initialise
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'cursor' , [ 'utils/classes' ] , function()
-	{
-		// initialise!!!
-	} );
+	loader.register( 'cursor' , [ 'utils/classes' ] );
 }
 
 // --------------------------------------------------

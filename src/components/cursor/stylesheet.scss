@@ -3,6 +3,11 @@
 {
 	// --------------------------------------------------
 
+	$width: 1em;
+	$height: 1em;
+
+	// --------------------------------------------------
+
 	--position_x: 0;
 	--position_y: 0;
 	--colour: grey;
@@ -14,35 +19,39 @@
 	// --------------------------------------------------
 
 	display: block;
-	width: 1em;
-	height: 1em;
+	width: $width;
+	height: $height;
 
 	position: absolute;
 
 	// --------------------------------------------------
+	// Solid ring of cursor's colour
 
 	&::before
 	{
 		content: '';
 		display: block;
 		position: absolute;
-		width: 1em;
-		height: 1em;
+		width: $width;
+		height: $height;
 
 		border: 0.1em solid var( --colour );
 	}
+
+	// --------------------------------------------------
+	// Pulsing white ring
 
 	&::after
 	{
 		content: '';
 		display: block;
 		position: absolute;
-		width: 1em;
-		height: 1em;
+		width: $width;
+		height: $height;
 
 		border: 0.1em solid white;
 
-		animation: st_cursor_pulse 110ms infinite;
+		animation: st_cursor_pulse 120ms infinite;
 	}
 
 	// --------------------------------------------------
