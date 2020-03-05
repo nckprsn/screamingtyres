@@ -16,6 +16,8 @@
 
 	transform: translate( calc( var( --position_x ) * 1em ) , calc( var( --position_y ) * 1em ) );
 
+	transition: transform 60ms ease-out;
+
 	// --------------------------------------------------
 
 	display: block;

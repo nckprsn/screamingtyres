@@ -9,7 +9,20 @@
 	</head>
 	<body>
 
-{% filter i(2) %}{% include 'components/game/template.njk' %}{% endfilter %}
+		<div class="st_game">
+			<div class="st_ui" tabindex="0">
+				<div class="st_viewport">
+					<div class="st_track"></div>
+				</div>
+				<div class="st_hud">
+					<nav>
+						<ul>
+							<li><a href="/">Homepage</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
 
 		<script src="/static/js/loader.js"></script>
 		<script>var loader = new LOADER( { src_prefix: '/static/js/' } );</script>

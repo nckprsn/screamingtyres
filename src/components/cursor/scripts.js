@@ -4,15 +4,17 @@
 // --------------------------------------------------
 
 /**
- *  Cursor object that moves on keyboard input.
+ * Cursor object that moves on keyboard input.
  *
- *  @class
- *  @param {Object} properties - Key/value pairs.
- *  @param {Object} properties.position - Cursor position.
- *  @param {number} properties.position.x - Cursor position from left.
- *  @param {number} properties.position.y - Cursor position from top.
- *  @param {string} properties.colour - Cursor colour.
- *  @param {function} properties.boundary_test - Should return true if the cursor can move to the passed position.
+ * @class
+ * @param {Object} properties - Key/value pairs.
+ * @param {HTMLElement} properties.$container - Containing DOM element.
+ * @param {Object} properties.position - Cursor position.
+ * @param {number} properties.position.x - Cursor position from left.
+ * @param {number} properties.position.y - Cursor position from top.
+ * @param {string} properties.colour - Cursor colour.
+ * @param {function} properties.boundary_test - Should return true if the cursor can move to the passed position.
+ * @param {function} properties.action - Callback to run if the default action is triggered (eg: user hits `space` or `enter`).
 */
 
 var CURSOR = function( properties )
@@ -34,36 +36,14 @@ var CURSOR = function( properties )
 // --------------------------------------------------
 
 /**
- * @destructor
-*/
-
-CURSOR.prototype.destroy = function()
-{
-	// Deactivate first to remove any event listeners
-	this.deactivate();
-
-	// Delete our cursor's DOM element
-	this.$cursor.parentElement.removeChild( this.$cursor )
-};
-
-// --------------------------------------------------
-
-/**
  * Cold-start setup.
 */
 
 CURSOR.prototype.initialise = function()
 {
 	// Create a DOM element for the cursor
-	// (currently from static content in UI template)
-	this.$cursor = document.querySelector( '.st_cursor' );
-	// CLASSES.add( this.$cursor , 'st_cursor' );
-
-	// Set the cursor colour if provided
-	if( this.colour )
-	{
-		this.$cursor.style.setProperty( '--colour' , this.colour );
-	}
+	this.$cursor = document.createElement( 'div' );
+	this.$cursor.classList.add( 'st_cursor' );
 
 	// Bind any event handlers to this CURSOR instance
 	this.keystroke_handler = this.keystroke_handler.bind( this )
@@ -82,18 +62,24 @@ CURSOR.prototype.activate = function()
 
 	// Attach event handlers to input events
 	document.body.addEventListener( 'keydown' , this.keystroke_handler );
+
+	// Inject into containing DOM element
+	this.$container.appendChild( this.$cursor );
 };
 
 // --------------------------------------------------
 
 /**
- * Deactivates the cursor.
+* Deactivates the cursor.
 */
 
 CURSOR.prototype.deactivate = function()
 {
 	// Unhook any event listeners
 	document.body.removeEventListener( 'keydown' , this.keystroke_handler );
+
+	// Remove element from the DOM
+	this.$container.removeChild( this.$cursor )
 };
 
 // --------------------------------------------------
@@ -109,6 +95,7 @@ CURSOR.prototype.update = function()
 	{
 		this.$cursor.style.setProperty( '--position_x' , this.position.x );
 		this.$cursor.style.setProperty( '--position_y' , this.position.y );
+		this.$cursor.style.setProperty( '--colour' , this.colour );
 	}.bind( this ) ); // Bind the callback above to this CURSOR instance
 };
 
@@ -134,6 +121,31 @@ CURSOR.prototype.move_by = function( move )
 
 	// Assign the new position
 	this.position = new_position;
+
+	// Sync up the UI
+	this.update();
+
+	return true;
+};
+
+// --------------------------------------------------
+
+/**
+ * Moves the cursor to a given position.
+ *
+ * @param {Object} position - Position to move the cursor to.
+ * @param {number} position.x - Horizontal position component.
+ * @param {number} position.y - Vertical position component.
+ * @returns {boolean} Returns true if the move was successful, false if not.
+*/
+
+CURSOR.prototype.move_to = function( position )
+{
+	// Abandon if the boundary test fails
+	if( !this.boundary_test( position ) ) return false;
+
+	// Assign the new position
+	this.position = position;
 
 	// Sync up the UI
 	this.update();
@@ -181,22 +193,19 @@ CURSOR.prototype.keystroke_handler = function( e )
 			break;
 
 		case "Escape":
-			this.destroy();
+			this.deactivate();
+			handled = true;
+			break;
+
+		case "Space":
+		case "Enter":
+			this.action( this.position );
 			handled = true;
 			break;
 	}
 
 	// Prevent the default action this event would usually trigger
 	if( handled ) e.preventDefault();
-
 };
-
-// --------------------------------------------------
-// Register dependencies and initialise
-
-if( typeof loader == 'object' )
-{
-	loader.register( 'cursor' , [ 'utils/classes' ] );
-}
 
 // --------------------------------------------------

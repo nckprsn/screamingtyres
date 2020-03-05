@@ -1,0 +1,42 @@
+
+.st_car
+{
+	// --------------------------------------------------
+
+	$width: 1em;
+	$height: 1em;
+
+	// --------------------------------------------------
+
+	--position_x: 0;
+	--position_y: 0;
+	--angle: 0;
+	--colour: magenta;
+
+	// --------------------------------------------------
+
+	transform: translate( calc( var( --position_x ) * 1em ) , calc( var( --position_y ) * 1em ) ) rotate( calc( var( --angle ) * 1deg ) );
+
+	transition: transform 60ms ease-out;
+
+	// --------------------------------------------------
+
+	display: block;
+	width: $width;
+	height: $height;
+
+	position: absolute;
+
+	// --------------------------------------------------
+
+	background: var( --colour );
+
+	// --------------------------------------------------
+}
+
+// @keyframes st_cursor_pulse
+// {
+// 	  0% { opacity: 1; }
+// 	 50% { opacity: 0; }
+// 	100% { opacity: 1; }
+// }

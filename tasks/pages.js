@@ -13,14 +13,13 @@ var fs = require( 'fs' );
 
 var settings =
 {
-	template_dir: './src/',
+	template_dir: './src/templates/',
 	src: './src/pages/**/index.json',
 	watch:
 	[
 		'./src/pages/**/index.json',
 		'./src/pages/**/*.html',
 		'./src/templates/**/*.njk',
-		'./src/components/**/*.njk',
 	],
 	dest: './public/',
 };
@@ -31,14 +30,14 @@ var settings =
 var njk = nunjucks.configure( settings.template_dir,
 {
 	autoescape: false,
-	noCache: true,
+	noCache: true, // Otherwise watch-triggered tasks have no effect
 } );
 
 njk.addFilter( 'i' , function( input , count )
 {
 	var indent = '';
 
-	while( count -- ) { indent += '\t'; }
+	while( count -- ) indent += '\t';
 
 	return input.replace( /^(.+)$/gm , indent + '$1' );
 } );
@@ -77,11 +76,11 @@ var render_pages = function()
 
 		resolve_file_mappings( data , cwd );
 
-		var output = render_template( `templates/${ data.template }.njk` , data );
+		var output = render_template( `${ data.template }.njk` , data );
 
 		// TODO: capture any errors
 
-		file.contents = new Buffer( output );
+		file.contents = Buffer.from( output );
 
 		callback( null , file );
 	} );

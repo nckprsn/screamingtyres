@@ -12,35 +12,40 @@
 
 var UI = function( settings )
 {
-	this.cursor = this.init_cursor();
-};
-
-// --------------------------------------------------
-
-/**
- * Creates a cursor.
- *
- * @returns {CURSOR} Returns a new cursor object.
-*/
-
-UI.prototype.init_cursor = function()
-{
-	var cursor = new CURSOR(
+	var car = new CAR(
 	{
-		position: { x: 10 , y: 10 },
+		$container: document.querySelector( '.st_track' ),
+		position: { x: 12 , y: 11 },
+		angle: 65,
 		colour: 'deeppink',
 		boundary_test: function( position )
 		{
 			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
 		},
 	} );
+
+	var cursor = new CURSOR(
+	{
+		$container: document.querySelector( '.st_track' ),
+		position: { x: 10 , y: 10 },
+		colour: 'deeppink',
+		boundary_test: function( position )
+		{
+			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
+		},
+		action: function( position )
+		{
+			car.move_to( position );
+		}
+	} );
+
 };
 
 // --------------------------------------------------
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'ui' , [ 'cursor' ] , function()
+	loader.register( 'ui' , [ 'cursor' , 'car' ] , function()
 	{
 		var ui = new UI();
 	} );
