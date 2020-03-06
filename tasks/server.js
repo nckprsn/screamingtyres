@@ -15,14 +15,14 @@ var settings =
 
 // --------------------------------------------------
 
-var cleanup = function( callback )
+var server_cleanup = function( callback )
 {
 	return del( settings.cleanup );
 };
 
 // --------------------------------------------------
 
-var start = function( callback )
+var server_start = function( callback )
 {
 	browsersync.init(
 	{
@@ -35,14 +35,14 @@ var start = function( callback )
 
 // --------------------------------------------------
 
-var resync = function( callback )
+var server_resync = function( callback )
 {
 	return browsersync.stream();
 };
 
 // --------------------------------------------------
 
-var reload = function( callback )
+var server_reload = function( callback )
 {
 	return browsersync.reload();
 };
@@ -52,10 +52,10 @@ var reload = function( callback )
 module.exports =
 {
 	settings: settings,
-	start: start,
-	resync: resync,
-	reload: reload,
-	cleanup: cleanup,
+	start: server_start,
+	resync: server_resync,
+	reload: server_reload,
+	cleanup: server_cleanup,
 };
 
 // --------------------------------------------------

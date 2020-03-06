@@ -5,12 +5,9 @@
 
 /**
  * Container class for the user interface
- *
- * @class
- * @param {Object} settings - Key/value pairs.
 */
 
-var UI = function( settings )
+var GAME = function( settings )
 {
 	var car = new CAR(
 	{
@@ -45,9 +42,9 @@ var UI = function( settings )
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'ui' , [ 'cursor' , 'car' ] , function()
+	loader.register( 'game' , [ 'cursor' , 'car' ] , function()
 	{
-		var ui = new UI();
+		var game = new GAME();
 	} );
 }
 

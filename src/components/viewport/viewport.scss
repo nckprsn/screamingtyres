@@ -3,10 +3,6 @@
 {
 	// --------------------------------------------------
 
-	font-size: 2.5em;
-
-	// --------------------------------------------------
-
 	display:block;
 	width:100vw;
 	height:100vh;
@@ -19,6 +15,8 @@
 
 .st_track
 {
+	font-size: 2.5em;
+	
 	$width: 56;
 	$height: 48;
 
@@ -28,7 +26,7 @@
 
 	position: relative;
 
-	$grid_colour: rgba( red , 0.4 );
+	$grid_colour: rgba( grey , 0.4 );
 	$grid_size: 1em;
 
 	background:
