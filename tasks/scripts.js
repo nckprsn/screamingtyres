@@ -15,7 +15,7 @@ var settings =
 		components: './src/components/**/*.js',
 		scripts: './src/scripts/**/*.js',
 	},
-	watch: [ './src/scripts/**/*.js' , './src/components/*/scripts.js' ],
+	watch: [ './src/scripts/**/*.js' , './src/components/*/*.js' ],
 	dest: './public/static/js/',
 };
 

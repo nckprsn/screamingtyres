@@ -15,7 +15,7 @@
 
 	// --------------------------------------------------
 
-	transform: translate( calc( var( --position_x ) * 1em ) , calc( var( --position_y ) * 1em ) ) rotate( calc( var( --angle ) * 1deg ) );
+	transform: translate( calc( var( --position_x ) * 1em ) , calc( var( --position_y ) * 1em ) ) rotate( calc( var( --angle ) * 1deg + 90deg ) );
 
 	transition: transform 60ms ease-out;
 
@@ -30,6 +30,31 @@
 	// --------------------------------------------------
 
 	background: var( --colour );
+
+	// --------------------------------------------------
+
+	&::after
+	{
+		content: '1';
+
+		display: block;
+		width: $width;
+		height: $height;
+		line-height: $height;
+
+		text-align: center;
+
+		position: absolute;
+
+		color: black;
+		background: white;
+		border-radius: 50%;
+
+		font-family: monospace, sans-serif;
+		font-weight: bold;
+
+		transform: scale(0.45);
+	}
 
 	// --------------------------------------------------
 }

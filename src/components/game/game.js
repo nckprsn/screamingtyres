@@ -13,7 +13,7 @@ var GAME = function( settings )
 	{
 		$container: document.querySelector( '.st_track' ),
 		position: { x: 12 , y: 11 },
-		angle: 65,
+		angle: -60,
 		colour: 'deeppink',
 		boundary_test: function( position )
 		{

@@ -12,7 +12,7 @@
  * @param {Object} properties.position - Car position.
  * @param {number} properties.position.x - Car position from left.
  * @param {number} properties.position.y - Car position from top.
- * @param {number} properties.angle - Car rotation in degrees.
+ * @param {number} properties.angle - Car rotation clockwise from vertical in degrees.
  * @param {string} properties.colour - Car colour.
  * @param {function} properties.boundary_test - Should return true if the car can move to the passed position.
 */
@@ -114,6 +114,8 @@ CAR.prototype.move_by = function( move )
 	// Abandon if the boundary test fails
 	if( !this.boundary_test( new_position ) ) return false;
 
+	this.angle = this.angle_to( new_position );
+
 	// Assign the new position
 	this.position = new_position;
 
@@ -139,6 +141,8 @@ CAR.prototype.move_to = function( position )
 	// Abandon if the boundary test fails
 	if( !this.boundary_test( position ) ) return false;
 
+	this.angle = this.angle_to( position );
+
 	// Assign the new position
 	this.position = position;
 
@@ -146,6 +150,42 @@ CAR.prototype.move_to = function( position )
 	this.update();
 
 	return true;
+};
+
+// --------------------------------------------------
+
+/**
+ * Set angle according to movement
+ *
+ * @param {Object} position - Position to move the car to.
+ * @param {number} position.x - Horizontal position component.
+ * @param {number} position.y - Vertical position component.
+ * @returns {number} Angle between from and to
+*/
+
+CAR.prototype.angle_to = function( position )
+{
+	var delta =
+	{
+		x: position.x - this.position.x,
+		y: position.y - this.position.y,
+	};
+
+	var angle = Math.atan2( delta.y , delta.x ) * 180 / Math.PI;
+
+	while( Math.abs( this.angle - angle ) > 180 )
+	{
+		if( ( this.angle - angle ) >= 180 )
+		{
+			angle += 360;
+		}
+		else
+		{
+			angle -= 360;
+		}
+	}
+
+	return angle;
 };
 
 // --------------------------------------------------
