@@ -44,6 +44,14 @@ CAR.prototype.initialise = function()
 	// Create a DOM element for the car
 	this.$car = document.createElement( 'div' );
 	this.$car.classList.add( 'st_car' );
+
+	var $gfx = document.createElement( 'svg' );
+	this.$car.innerHTML =
+	`<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
+		<path d="M11 20h78v20h-78Z" fill="#333333" />
+		<path d="M11 60h78v20h-78Z" fill="#333333" />
+		<path d="M20 10h60v80h-60Z" fill="currentcolor" />
+	</svg>`;
 };
 
 // --------------------------------------------------
