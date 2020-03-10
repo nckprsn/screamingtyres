@@ -45,7 +45,7 @@ DOT.prototype.initialise = function()
 	var $gfx = document.createElement( 'svg' );
 	this.$dot.innerHTML =
 	`<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
-		<circle cx="50" cy="50" r="30" fill="currentcolor" />
+		<circle cx="50" cy="50" r="35" fill="currentcolor" />
 	</svg>`;
 };
 

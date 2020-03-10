@@ -15,7 +15,7 @@ var GAME = function( settings )
 		position: { x: 12 , y: 11 },
 		inertia: { x: 2 , y: 1 },
 		angle: -60,
-		colour: 'red',
+		colour: 'deeppink',
 		boundary_test: function( position )
 		{
 			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
@@ -30,7 +30,7 @@ var GAME = function( settings )
 			x: car.dot.position.x,
 			y: car.dot.position.y,
 		},
-		colour: 'red',
+		colour: 'deeppink',
 		boundary_test: function( position )
 		{
 			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
