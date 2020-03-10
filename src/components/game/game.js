@@ -13,8 +13,9 @@ var GAME = function( settings )
 	{
 		$container: document.querySelector( '.st_track' ),
 		position: { x: 12 , y: 11 },
+		inertia: { x: 2 , y: 1 },
 		angle: -60,
-		colour: 'deeppink',
+		colour: 'red',
 		boundary_test: function( position )
 		{
 			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
@@ -24,8 +25,12 @@ var GAME = function( settings )
 	var cursor = new CURSOR(
 	{
 		$container: document.querySelector( '.st_track' ),
-		position: { x: 10 , y: 10 },
-		colour: 'deeppink',
+		position:
+		{
+			x: car.dot.position.x,
+			y: car.dot.position.y,
+		},
+		colour: 'red',
 		boundary_test: function( position )
 		{
 			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
@@ -33,6 +38,7 @@ var GAME = function( settings )
 		action: function( position )
 		{
 			car.move_to( position );
+			this.move_to( car.dot.position );
 		}
 	} );
 

@@ -10,8 +10,6 @@
  * @param {Object} properties - Key/value pairs.
  * @param {HTMLElement} properties.$container - Containing DOM element.
  * @param {Object} properties.position - Cursor position.
- * @param {number} properties.position.x - Cursor position from left.
- * @param {number} properties.position.y - Cursor position from top.
  * @param {string} properties.colour - Cursor colour.
  * @param {function} properties.boundary_test - Should return true if the cursor can move to the passed position.
  * @param {function} properties.action - Callback to run if the default action is triggered (eg: user hits `space` or `enter`).
@@ -45,8 +43,9 @@ CURSOR.prototype.initialise = function()
 	this.$cursor = document.createElement( 'div' );
 	this.$cursor.classList.add( 'st_cursor' );
 
-	// Bind any event handlers to this CURSOR instance
+	// Bind any event handlers or callbacks to this CURSOR instance
 	this.keystroke_handler = this.keystroke_handler.bind( this )
+	this.action = this.action.bind( this )
 };
 
 // --------------------------------------------------
@@ -109,23 +108,14 @@ CURSOR.prototype.update = function()
 
 CURSOR.prototype.move_by = function( move )
 {
-	// Work out where the cursor would move to first
+	// Work out where the cursor would move to
 	var new_position =
 	{
 		x: this.position.x + move.x,
 		y: this.position.y + move.y,
 	};
 
-	// Abandon if the boundary test fails
-	if( !this.boundary_test( new_position ) ) return false;
-
-	// Assign the new position
-	this.position = new_position;
-
-	// Sync up the UI
-	this.update();
-
-	return true;
+	return this.move_to( new_position );
 };
 
 // --------------------------------------------------
@@ -134,8 +124,6 @@ CURSOR.prototype.move_by = function( move )
  * Moves the cursor to a given position.
  *
  * @param {Object} position - Position to move the cursor to.
- * @param {number} position.x - Horizontal position component.
- * @param {number} position.y - Vertical position component.
  * @returns {boolean} Returns true if the move was successful, false if not.
 */
 

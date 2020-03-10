@@ -1,0 +1,45 @@
+
+.st_dot
+{
+	// --------------------------------------------------
+
+	$width: 1em;
+	$height: 1em;
+
+	// --------------------------------------------------
+
+	--position_x: 0;
+	--position_y: 0;
+	--angle: 0;
+	--colour: magenta;
+
+	// --------------------------------------------------
+
+	transform: translate( calc( var( --position_x ) * 1em ) , calc( var( --position_y ) * 1em ) ) rotate( calc( var( --angle ) * 1deg + 90deg ) );
+
+	transition: transform 200ms ease-out;
+
+	// --------------------------------------------------
+
+	display: block;
+	width: $width;
+	height: $height;
+
+	position: absolute;
+	z-index: 90;
+
+	// --------------------------------------------------
+
+	& > svg
+	{
+		position: absolute;
+		display: block;
+		width: $width;
+		height: $height;
+		position: absolute;
+
+		color: var( --colour );
+	}
+
+	// --------------------------------------------------
+}

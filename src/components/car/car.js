@@ -10,8 +10,7 @@
  * @param {Object} properties - Key/value pairs.
  * @param {HTMLElement} properties.$container - Containing DOM element.
  * @param {Object} properties.position - Car position.
- * @param {number} properties.position.x - Car position from left.
- * @param {number} properties.position.y - Car position from top.
+ * @param {Object} properties.inertia - Car inertia.
  * @param {number} properties.angle - Car rotation clockwise from vertical in degrees.
  * @param {string} properties.colour - Car colour.
  * @param {function} properties.boundary_test - Should return true if the car can move to the passed position.
@@ -45,13 +44,27 @@ CAR.prototype.initialise = function()
 	this.$car = document.createElement( 'div' );
 	this.$car.classList.add( 'st_car' );
 
+	// Insert the car image
 	var $gfx = document.createElement( 'svg' );
 	this.$car.innerHTML =
 	`<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
-		<path d="M11 20h78v20h-78Z" fill="#333333" />
-		<path d="M11 60h78v20h-78Z" fill="#333333" />
-		<path d="M20 10h60v80h-60Z" fill="currentcolor" />
+		<path d="M16 20h68v20h-68Z" fill="#333333" />
+		<path d="M16 60h68v20h-68Z" fill="#333333" />
+		<path d="M25 10h50v80h-50Z" fill="currentcolor" />
 	</svg>`;
+
+	// Create a dot for the car
+	this.dot = new DOT(
+	{
+		$container: this.$container,
+		position:
+		{
+			x: this.position.x + this.inertia.x,
+			y: this.position.y + this.inertia.y,
+		},
+		colour: this.colour,
+		boundary_test: this.boundary_test,
+	} );
 };
 
 // --------------------------------------------------
@@ -67,6 +80,9 @@ CAR.prototype.activate = function()
 
 	// Inject into containing DOM element
 	this.$container.appendChild( this.$car );
+
+	// Activate the dot too
+	this.dot.activate();
 };
 
 // --------------------------------------------------
@@ -77,6 +93,9 @@ CAR.prototype.activate = function()
 
 CAR.prototype.deactivate = function()
 {
+	// Deactivate the dot too
+	this.dot.deactivate();
+
 	// Remove element from the DOM
 	this.$container.removeChild( this.$car )
 };
@@ -97,6 +116,9 @@ CAR.prototype.update = function()
 		this.$car.style.setProperty( '--angle' , this.angle );
 		this.$car.style.setProperty( '--colour' , this.colour );
 	}.bind( this ) ); // Bind the callback above to this CAR instance
+
+	// Update the dot too
+	this.dot.update();
 };
 
 // --------------------------------------------------
@@ -105,32 +127,19 @@ CAR.prototype.update = function()
  * Moves the car by a given vector.
  *
  * @param {Object} move - Vector to move the car by.
- * @param {number} move.x - Horizontal vector component.
- * @param {number} move.y - Vertical vector component.
  * @returns {boolean} Returns true if the move was successful, false if not.
 */
 
 CAR.prototype.move_by = function( move )
 {
-	// Work out where the car would move to first
+	// Work out where the car would move to
 	var new_position =
 	{
 		x: this.position.x + move.x,
 		y: this.position.y + move.y,
 	};
 
-	// Abandon if the boundary test fails
-	if( !this.boundary_test( new_position ) ) return false;
-
-	this.angle = this.angle_to( new_position );
-
-	// Assign the new position
-	this.position = new_position;
-
-	// Sync up the UI
-	this.update();
-
-	return true;
+	return this.move_to( new_position );
 };
 
 // --------------------------------------------------
@@ -139,8 +148,6 @@ CAR.prototype.move_by = function( move )
  * Moves the car to a given position.
  *
  * @param {Object} position - Position to move the car to.
- * @param {number} position.x - Horizontal position component.
- * @param {number} position.y - Vertical position component.
  * @returns {boolean} Returns true if the move was successful, false if not.
 */
 
@@ -149,10 +156,28 @@ CAR.prototype.move_to = function( position )
 	// Abandon if the boundary test fails
 	if( !this.boundary_test( position ) ) return false;
 
-	this.angle = this.angle_to( position );
+	// We'll use this to move the dot later
+	var delta =
+	{
+		x: position.x - this.position.x,
+		y: position.y - this.position.y,
+	};
+
+	// Ignore angle change if move is zero
+	if( delta.x != 0 || delta.y != 0 )
+	{
+		this.angle = this.angle_to( position );
+	}
 
 	// Assign the new position
 	this.position = position;
+
+	// Move the dot by the same vector as the car, from the car's position
+	this.dot.move_to(
+	{
+		x: this.position.x + delta.x,
+		y: this.position.y + delta.y,
+	} );
 
 	// Sync up the UI
 	this.update();
@@ -166,8 +191,6 @@ CAR.prototype.move_to = function( position )
  * Set angle according to movement
  *
  * @param {Object} position - Position to move the car to.
- * @param {number} position.x - Horizontal position component.
- * @param {number} position.y - Vertical position component.
  * @returns {number} Angle between from and to
 */
 
@@ -179,21 +202,26 @@ CAR.prototype.angle_to = function( position )
 		y: position.y - this.position.y,
 	};
 
+	// Gives us a technically correct angle, but not the closest
 	var angle = Math.atan2( delta.y , delta.x ) * 180 / Math.PI;
 
+	// Rotate the angle by +n/-n full turns to get the closest angle to existing angle
 	while( Math.abs( this.angle - angle ) > 180 )
 	{
 		if( ( this.angle - angle ) >= 180 )
-		{
 			angle += 360;
-		}
 		else
-		{
 			angle -= 360;
-		}
 	}
 
 	return angle;
 };
+
+// --------------------------------------------------
+
+if( typeof loader == 'object' )
+{
+	loader.register( 'car' , [ 'dot' ] );
+}
 
 // --------------------------------------------------
