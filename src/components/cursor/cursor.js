@@ -43,9 +43,8 @@ CURSOR.prototype.initialise = function()
 	this.$cursor = document.createElement( 'div' );
 	this.$cursor.classList.add( 'st_cursor' );
 
-	// Bind any event handlers or callbacks to this CURSOR instance
+	// Bind any event handlers to this CURSOR instance
 	this.keystroke_handler = this.keystroke_handler.bind( this )
-	this.action = this.action.bind( this )
 };
 
 // --------------------------------------------------
@@ -177,11 +176,6 @@ CURSOR.prototype.keystroke_handler = function( e )
 		case "KeyD":
 		case "ArrowRight":
 			this.move_by( { x: 1 , y: 0 } );
-			handled = true;
-			break;
-
-		case "Escape":
-			this.deactivate();
 			handled = true;
 			break;
 

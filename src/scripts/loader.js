@@ -20,7 +20,7 @@
  * loader.register( 'myscript' , [ 'dependency' , 'another_dependency' ] , function()
  * {
  * 	// Code to run when the dependencies have loaded.
- * } );
+ * });
  * ```
  *
  * @class

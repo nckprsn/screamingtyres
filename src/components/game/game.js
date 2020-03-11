@@ -9,38 +9,13 @@
 
 var GAME = function( settings )
 {
-	var car = new CAR(
+	var player = new PLAYER(
 	{
 		$container: document.querySelector( '.st_track' ),
-		position: { x: 12 , y: 11 },
+		position: { x: 10 , y: 10 },
 		inertia: { x: 2 , y: 1 },
-		angle: -60,
 		colour: 'deeppink',
-		boundary_test: function( position )
-		{
-			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
-		},
-	} );
-
-	var cursor = new CURSOR(
-	{
-		$container: document.querySelector( '.st_track' ),
-		position:
-		{
-			x: car.dot.position.x,
-			y: car.dot.position.y,
-		},
-		colour: 'deeppink',
-		boundary_test: function( position )
-		{
-			return ( position.x >= 0 && position.x < 56 && position.y >= 0 && position.y < 48 );
-		},
-		action: function( position )
-		{
-			car.move_to( position );
-			this.move_to( car.dot.position );
-		}
-	} );
+	});
 
 };
 
@@ -48,10 +23,10 @@ var GAME = function( settings )
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'game' , [ 'cursor' , 'car' ] , function()
+	loader.register( 'game' , [ 'player' ] , function()
 	{
 		var game = new GAME();
-	} );
+	});
 }
 
 // --------------------------------------------------

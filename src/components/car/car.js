@@ -64,7 +64,14 @@ CAR.prototype.initialise = function()
 		},
 		colour: this.colour,
 		boundary_test: this.boundary_test,
-	} );
+	});
+
+	// Set an initial angle to match the inertia
+	this.angle = this.angle_to(
+	{
+		x: this.position.x + this.inertia.x,
+		y: this.position.y + this.inertia.y,
+	});
 };
 
 // --------------------------------------------------
@@ -177,7 +184,7 @@ CAR.prototype.move_to = function( position )
 	{
 		x: this.position.x + delta.x,
 		y: this.position.y + delta.y,
-	} );
+	});
 
 	// Sync up the UI
 	this.update();

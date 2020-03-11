@@ -42,6 +42,7 @@ DOT.prototype.initialise = function()
 	this.$dot = document.createElement( 'div' );
 	this.$dot.classList.add( 'st_dot' );
 
+	// Insert the dot image
 	var $gfx = document.createElement( 'svg' );
 	this.$dot.innerHTML =
 	`<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
