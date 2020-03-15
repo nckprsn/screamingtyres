@@ -1,0 +1,86 @@
+
+.st_move
+{
+	// --------------------------------------------------
+
+	$width: 1em;
+	$height: 1em;
+
+	// --------------------------------------------------
+
+	--position_x: 0;
+	--position_y: 0;
+	--colour: grey;
+
+	// --------------------------------------------------
+
+	transform: translate( calc( var( --position_x ) * 1em ) , calc( var( --position_y ) * 1em ) );
+
+	transition: transform 300ms ease-out, background-color 500ms ease-out;
+
+	// --------------------------------------------------
+
+	display: block;
+	width: $width;
+	height: $height;
+
+	position: absolute;
+
+	// --------------------------------------------------
+	// Dashed outline in move's colour
+
+	&::before
+	{
+		content: '';
+		display: block;
+		position: absolute;
+		width: $width;
+		height: $height;
+
+		// Outline + half negative offset to avoid double borders between moves
+		outline: 2px dotted var( --colour );
+		outline-offset: -1px;
+	}
+
+	// --------------------------------------------------
+
+	mix-blend-mode: hard-light;
+
+	&.has_cost_0
+	{
+		background: rgba( white , 0.75 );
+	}
+
+	&.has_cost_1
+	{
+		background: rgba( white , 0.25 );
+	}
+
+	&.is_invalid
+	{
+		pointer-events: none;
+
+		background: rgba( black , 0.5 );
+	}
+
+	// --------------------------------------------------
+
+	&::after
+	{
+		content: '';
+		display: block;
+		position: absolute;
+		width: $width;
+		height: $height;
+	}
+
+	// --------------------------------------------------
+
+	&:hover
+	{
+		z-index: 55;
+		@include map_item_highlight();
+	}
+
+	// --------------------------------------------------
+}

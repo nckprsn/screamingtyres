@@ -12,8 +12,8 @@ var GAME = function( settings )
 	var player = new PLAYER(
 	{
 		$container: document.querySelector( '.st_track' ),
-		position: { x: 10 , y: 10 },
-		inertia: { x: 2 , y: 1 },
+		position: { x: 15 , y: 18 },
+		inertia: { x: -1 , y: -2 },
 		colour: 'deeppink',
 	});
 
@@ -23,8 +23,9 @@ var GAME = function( settings )
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'game' , [ 'player' ] , function()
+	loader.register( 'game' , [ 'player' , 'map' ] , function()
 	{
+		var map = new MAP();
 		var game = new GAME();
 	});
 }

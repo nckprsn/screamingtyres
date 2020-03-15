@@ -25,43 +25,11 @@
 	height: $height;
 
 	position: absolute;
+	z-index: 50;
 
 	// --------------------------------------------------
-	// Solid ring of cursor's colour
 
-	&::before
-	{
-		content: '';
-		display: block;
-		position: absolute;
-		width: $width;
-		height: $height;
-
-		border: 0.1em solid var( --colour );
-	}
+	@include map_item_highlight();
 
 	// --------------------------------------------------
-	// Pulsing white ring
-
-	&::after
-	{
-		content: '';
-		display: block;
-		position: absolute;
-		width: $width;
-		height: $height;
-
-		border: 0.1em solid white;
-
-		animation: st_cursor_pulse 120ms infinite;
-	}
-
-	// --------------------------------------------------
-}
-
-@keyframes st_cursor_pulse
-{
-	  0% { opacity: 1; }
-	 50% { opacity: 0; }
-	100% { opacity: 1; }
 }

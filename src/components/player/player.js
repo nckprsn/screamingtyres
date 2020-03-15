@@ -38,6 +38,9 @@ var PLAYER = function( properties )
 
 PLAYER.prototype.initialise = function()
 {
+	// Temporary!
+	this.map = new MAP();
+
 	// Create a car for our player
 	this.car = new CAR(
 	{
@@ -70,6 +73,19 @@ PLAYER.prototype.initialise = function()
 		{
 			this.car.move_to( position );
 			this.cursor.move_to( this.car.dot.position );
+			this.moves.update();
+		}.bind( this ),
+	});
+
+	// Create moves
+	this.moves = new MOVES(
+	{
+		$container: this.$container,
+		center: function(){ return this.car.dot.position; }.bind( this ),
+		colour: this.colour,
+		is_valid: function( position )
+		{
+			return this.map.is_valid( position );
 		}.bind( this ),
 	});
 };
@@ -109,7 +125,7 @@ PLAYER.prototype.update = function()
 
 if( typeof loader == 'object' )
 {
-	loader.register( 'player' , [ 'cursor' , 'car' ] );
+	loader.register( 'player' , [ 'cursor' , 'car' , 'moves' , 'map' ] );
 }
 
 // --------------------------------------------------

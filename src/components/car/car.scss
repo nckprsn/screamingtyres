@@ -27,6 +27,9 @@
 	width: $width;
 	height: $height;
 
+	// Make transparent to mouse hover
+	pointer-events: none;
+
 	position: absolute;
 	z-index: 100;
 
