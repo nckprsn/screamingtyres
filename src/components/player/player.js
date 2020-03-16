@@ -82,10 +82,11 @@ PLAYER.prototype.initialise = function()
 	{
 		$container: this.$container,
 		center: function(){ return this.car.dot.position; }.bind( this ),
+		viewpoint: function(){ return this.car.position; }.bind( this ),
 		colour: this.colour,
-		is_valid: function( position )
+		is_valid: function( from , to )
 		{
-			return this.map.is_valid( position );
+			return this.map.is_valid( from , to );
 		}.bind( this ),
 	});
 };

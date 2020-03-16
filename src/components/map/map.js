@@ -89,100 +89,95 @@ MAP.prototype.initialise = function()
 
 // --------------------------------------------------
 
-MAP.prototype.is_valid = function( position )
+MAP.prototype.is_valid = function( from , to )
 {
-	return this.xxx[ position.y ][ position.x ] == 1;
-};
+	if( this.xxx[ to.y ][ to.x ] == 0 ) return false;
 
-// --------------------------------------------------
+	if( !this.line_of_sight( from , to ) ) return false;
 
-MAP.prototype.line_of_sight = function( from , to )
-{
 	return true;
 };
 
 // --------------------------------------------------
 
-MAP.prototype.plot = function( from , to )
+/**
+* Determines if a point has a clear view to another, according to this.xxx
+*
+* @param {Object} from - Start coordinates.
+* @param {Object} to - Start coordinates.
+*
+* @returns {boolean}
+*/
+
+MAP.prototype.line_of_sight = function( from , to )
 {
-	// Mostly from https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm#All_cases
+	var path = this.trace( from , to );
 
-	var delta = { 'x' : ( to.x - from.x ) , 'y' : ( to.y - from.y ) };
-
-	if( Math.abs( delta.y ) < Math.abs( delta.x ) )
+	for( var i = 0 ; i < path.length ; i ++ )
 	{
-		return function( from , to )
+		if( this.xxx[ path[ i ].y ][ path[ i ].x ] == 0 )
 		{
-			var path = [];
-
-			var dx = path_to.x - path_from.x;
-			var dy = path_to.y - path_from.y;
-			var yi = 1;
-
-			if( dy < 0 )
-			{
-				yi = -1;
-				dy = -dy;
-			}
-
-			var D = 2*dy - dx;
-			var y = path_from.y;
-
-			for( var x = path_from.x ; x != path_to.x ; x += ( dx > 0 ) ? 1 : -1 )
-			{
-				path.push( { 'x' : x , 'y' : y } );
-
-				if( D > 0 )
-				{
-					y = y + yi;
-					D = D - 2*dx;
-				}
-
-				D = D + 2*dy;
-			}
-
-			path.push( path_to );
-
-			return path;
-		}();
+			return false;
+		}
 	}
-	else
+
+	return true;
+};
+
+// --------------------------------------------------
+
+/**
+ * Draws a line between two grid items.
+ *
+ * @param {Object} from - Start coordinates.
+ * @param {Object} to - Start coordinates.
+ *
+ * @returns {array} An array of map coordinates representing the path between `from` and `to`.
+*/
+
+MAP.prototype.trace = function( from , to )
+{
+	// ⚠ This algorithm changes `from` - make copies!
+	to   = { x:to.x   , y:to.y   };
+	from = { x:from.x , y:from.y };
+
+	// The path that we'll eventually return
+	var path = [];
+
+	// Work out our relative movement
+	var dx = Math.abs( to.x - from.x );
+	var dy = -1 * Math.abs( to.y - from.y );
+
+	// Get an increment for each axis
+	var sx = from.x < to.x ? 1 : -1;
+	var sy = from.y < to.y ? 1 : -1;
+
+	var err = dx + dy;
+
+	while( true )
 	{
-		return function( from , to )
+		// Add to the returnable
+		path.push( { x:from.x , y:from.y } );
+
+		// If we're at `to` then exit our loop
+		if( from.x == to.x && from.y == to.y ) break;
+
+		var e2 = 2*err;
+
+		if( e2 >= dy )
 		{
-			var path = [];
+			err += dy;
+			from.x += sx;
+		}
 
-			var dx = path_to.x - path_from.x;
-			var dy = path_to.y - path_from.y;
-			var xi = 1;
-
-			if( dx < 0 )
-			{
-				xi = -1;
-				dx = -dx;
-			}
-
-			var D = 2*dx - dy;
-			var x = path_from.x;
-
-			for( var y = path_from.y ; y != path_to.y ; y += ( dy > 0 ) ? 1 : -1 )
-			{
-				path.push( { 'x' : x , 'y' : y } );
-
-				if( D > 0 )
-				{
-					x = x + xi;
-					D = D - 2*dy;
-				}
-
-				D = D + 2*dx;
-			}
-
-			path.push( path_to );
-
-			return path;
-		}();
+		if( e2 <= dx )
+		{
+			err += dx;
+			from.y += sy;
+		}
 	}
+
+	return path;
 };
 
 // --------------------------------------------------

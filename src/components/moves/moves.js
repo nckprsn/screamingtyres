@@ -151,7 +151,8 @@ MOVES.prototype.update = function()
 				y: this.center().y + this.moves[ i ].relative_position.y,
 			};
 
-			var is_valid = this.is_valid( new_position );
+			var is_valid = this.is_valid( this.viewpoint() , new_position );
+			// var is_valid = this.is_valid( this.moves[ i ].position , new_position );
 
 			// Assign our new position
 			this.moves[ i ].position = new_position;
