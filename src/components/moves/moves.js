@@ -88,8 +88,6 @@ MOVES.prototype.initialise = function()
 		$move.classList.add( 'st_move' );
 		this.$moves.push( $move );
 	}
-
-	this.activate();
 };
 
 // --------------------------------------------------
