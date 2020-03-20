@@ -48,9 +48,9 @@ CAR.prototype.initialise = function()
 	var $gfx = document.createElement( 'svg' );
 	this.$car.innerHTML =
 	`<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
-		<path d="M16 20h68v20h-68Z" fill="#333333" />
-		<path d="M16 60h68v20h-68Z" fill="#333333" />
-		<path d="M25 10h50v80h-50Z" fill="currentcolor" />
+		<rect x="16" y="20" width="66" height="22" rx="0.1em" fill="#333333" />
+		<rect x="16" y="60" width="66" height="22" rx="0.1em" fill="#333333" />
+		<rect x="25" y="10" width="50" height="80" rx="0.25em" ry="0.4em" stroke="#333333" stroke-width="0.15em" fill="currentcolor" />
 	</svg>`;
 
 	// Create a dot for the car

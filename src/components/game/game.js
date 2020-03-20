@@ -14,7 +14,7 @@ var GAME = function( settings )
 		$container: document.querySelector( '.st_track' ),
 		position: { x: 15 , y: 18 },
 		inertia: { x: -1 , y: -2 },
-		colour: 'deeppink',
+		colour: 'orangered',
 	});
 
 };
