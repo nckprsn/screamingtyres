@@ -24,7 +24,7 @@ var MOVES = function( properties )
 	}
 
 	// A 2 dimensional array of valid moves and their cost
-	// ⚠ Must be square with an odd numbered side length
+	// ⚠ Must be square with an odd numbered size
 	this.move_pattern =
 	[
 		[ null , 1 , 1 , 1 , null ],
@@ -149,8 +149,8 @@ MOVES.prototype.update = function()
 				y: this.center().y + this.moves[ i ].relative_position.y,
 			};
 
+			// Work out if it's valid or not
 			var is_valid = this.is_valid( this.viewpoint() , new_position );
-			// var is_valid = this.is_valid( this.moves[ i ].position , new_position );
 
 			// Assign our new position
 			this.moves[ i ].position = new_position;

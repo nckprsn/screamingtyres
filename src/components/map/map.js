@@ -49,7 +49,7 @@ MAP.prototype.initialise = function()
 	var p =
 	{
 		name: 'pits',
-		is_valid: function(){ return t.is_valid(); },
+		is_valid: function(){ return true; },
 	};
 
 	this.map =
