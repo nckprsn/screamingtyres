@@ -50,8 +50,8 @@ CAR.prototype.initialise = function()
 	`<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
 
 		<!-- Wheels -->
-		<rect x="17" y="20" width="66" height="22" rx="0.1em" fill="#333333" />
-		<rect x="17" y="60" width="66" height="22" rx="0.1em" fill="#333333" />
+		<rect x="17" y="20" width="66" height="22" rx="0.1em" fill="#444444" />
+		<rect x="17" y="60" width="66" height="22" rx="0.1em" fill="#444444" />
 
 		<!-- Exhausts -->
 		<rect x="35" y="90" width="6" height="6" fill="#333333" />
@@ -60,15 +60,18 @@ CAR.prototype.initialise = function()
 		<!-- Body -->
 		<rect x="25" y="10" width="50" height="80" rx="0.3em" ry="0.4em" fill="currentcolor" />
 
+		<!-- Roof -->
+		<!-- <path d="M35 50v25C40 81, 60 81, 65 75v-25Z" fill="rgba( 0,0,0 , 0.2 )" /> -->
+
 		<!-- Single stripe -->
-		<!-- <rect x="45" y="10" width="10" height="80" rx="0.1em" fill="white" /> -->
+		<rect x="45" y="10" width="10" height="80" rx="0.1em" fill="white" />
 
 		<!-- Double stripes -->
-		<rect x="42" y="11" width="6" height="78" rx="0.05em" fill="white" />
-		<rect x="52" y="11" width="6" height="78" rx="0.05em" fill="white" />
+		<!-- <rect x="42" y="11" width="6" height="78" rx="0.05em" fill="white" />
+		<rect x="52" y="11" width="6" height="78" rx="0.05em" fill="white" /> -->
 
 		<!-- Windscreen -->
-		<path d="M35 50v-5C40 33, 60 33, 65 45v5Z" fill="lightblue" stroke="rgba( 0,0,255 , 0.5 )" stroke-width="0.05em" />
+		<path d="M35 50v-5C40 33, 60 33, 65 45v5Z" fill="#444444" />
 
 		<!-- Number dot -->
 		<circle cx="50" cy="63" r="13" fill="white" />
