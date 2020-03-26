@@ -61,7 +61,7 @@ CAR.prototype.initialise = function()
 		<rect x="25" y="10" width="50" height="80" rx="0.3em" ry="0.4em" fill="currentcolor" />
 
 		<!-- Roof -->
-		<!-- <path d="M35 50v25C40 81, 60 81, 65 75v-25Z" fill="rgba( 0,0,0 , 0.2 )" /> -->
+		<path d="M33 50v25C40 85, 60 85, 67 75v-25Z" fill="rgba( 0,0,0 , 0.3 )" />
 
 		<!-- Single stripe -->
 		<rect x="45" y="10" width="10" height="80" rx="0.1em" fill="white" />
@@ -71,10 +71,10 @@ CAR.prototype.initialise = function()
 		<rect x="52" y="11" width="6" height="78" rx="0.05em" fill="white" /> -->
 
 		<!-- Windscreen -->
-		<path d="M35 50v-5C40 33, 60 33, 65 45v5Z" fill="#444444" />
+		<path d="M33 50v-5C40 33, 60 33, 67 45v5Z" fill="#444444" />
 
 		<!-- Number dot -->
-		<circle cx="50" cy="63" r="13" fill="white" />
+		<circle cx="50" cy="66" r="13" fill="white" />
 		<!-- <text x="50" y="67.5" text-anchor="middle" font-size="22" dominant-baseline="text-top" alignment-baseline="middle" style="font-family:monospace; font-weight:bold;">😜</text> -->
 		<!-- <text x="50" y="67.5" text-anchor="middle" font-size="22" dominant-baseline="text-top" alignment-baseline="middle" style="font-family:sans-serif; font-weight:bold; letter-spacing:-0.1em;">73</text> -->
 
